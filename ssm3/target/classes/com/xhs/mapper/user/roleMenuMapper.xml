@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mappers.mysql.roleMenuMapper" >
+
+  <resultMap id="BaseResultMap" type="RoleMenu" >
+    <result column="role_cd" property="roleCd" jdbcType="VARCHAR" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="menu_cd" property="menuCd" jdbcType="VARCHAR" />
+    <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_method" property="createMethod" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_upd_user" property="lastUpdUser" jdbcType="VARCHAR" />
+    <result column="last_upd_method" property="lastUpdMethod" jdbcType="VARCHAR" />
+    <result column="last_upd_time" property="lastUpdTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <insert id="insert" parameterType="RoleMenu" >
+    insert into tb_role_menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleCd != null" >
+        role_cd,
+      </if>
+      <if test="roleName != null" >
+        role_name,
+      </if>
+      <if test="menuCd != null" >
+        menu_cd,
+      </if>
+      <if test="menuName != null" >
+        menu_name,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createMethod != null" >
+        create_method,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdUser != null" >
+        last_upd_user,
+      </if>
+      <if test="lastUpdMethod != null" >
+        last_upd_method,
+      </if>
+      <if test="lastUpdTime != null" >
+        last_upd_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleCd != null" >
+        #{roleCd,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuCd != null" >
+        #{menuCd,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null" >
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createMethod != null" >
+        #{createMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdUser != null" >
+        #{lastUpdUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdMethod != null" >
+        #{lastUpdMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdTime != null" >
+        #{lastUpdTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="map" >
+    update tb_role_menu
+    <set >
+      <if test="roleCd != null" >
+        role_cd = #{roleCd,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuCd != null" >
+        menu_cd = #{menuCd,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null" >
+        menu_name = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createMethod != null" >
+        create_method = #{createMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdUser != null" >
+        last_upd_user = #{lastUpdUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdMethod != null" >
+        last_upd_method = #{lastUpdMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdTime != null" >
+        last_upd_time = #{lastUpdTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where menu_cd = #{menuCd}
+  </update>
+  
+</mapper>

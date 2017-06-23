@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<typeAliases>
+		<typeAlias alias="User" type="com.xhs.entity.user.User" />
+		<typeAlias alias="Role" type="com.xhs.entity.role.Role" />
+		<typeAlias alias="Menu" type="com.xhs.entity.menu.Menu" />
+		<typeAlias alias="UserRole" type="com.xhs.entity.user.UserRole" />
+		<typeAlias alias="RoleMenu" type="com.xhs.entity.user.RoleMenu" />
+		<typeAlias alias="UserMenu" type="com.xhs.entity.user.UserMenu" />
+		<typeAlias alias="CamelCaseKeyMap" type="com.xhs.entity.common.CamelCaseKeyMap" />
+	</typeAliases>
+	
+</configuration>  
