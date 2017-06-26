@@ -11,11 +11,14 @@ package com.xhs.interceptor;
 
 import java.io.PrintWriter;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -25,8 +28,6 @@ import com.xhs.entity.user.User;
  * ClassName:CommonInterceptor <br/>
  * Function: TODO ADD FUNCTION. <br/>
  * Reason: TODO ADD REASON. <br/>
- * Date: 2017��6��23�� ����9:55:52 <br/>
- * 
  * @author Administrator
  * @version
  * @since JDK 1.6

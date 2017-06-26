@@ -64,10 +64,10 @@ div#users-contain table td, div#users-contain table th {
 </style>
 <script type="text/javascript">
 $(function() {
-	var name = $( "#name" ),
+	var username = $( "#username" ),
     email = $( "#email" ),
     password = $( "#password" ),
-    allFields = $( [] ).add( name ).add( email ).add( password ),
+    allFields = $( [] ).add( username ).add( email ).add( password ),
     tips = $( ".validateTips" );
 	
 	function updateTips( t ) {
@@ -99,7 +99,25 @@ $(function() {
         return true;
       }
     }
-	
+   
+    
+    function save(){
+    	$.ajax({
+            type    : "POST",
+            url     : "<%=basePath%>user/saveUser",
+            data    : {username:'12345678'},
+            success : function(result){
+            	if(result.success){
+            		alert(1);
+            	}else{
+            		alert(2);
+            	}
+            },  
+            dataType: 'json',
+            async : false
+        });
+    }
+
    $( "#dialog-form" ).dialog({
 	      autoOpen: false,
 	      height: 400,
@@ -107,25 +125,30 @@ $(function() {
 	      modal: true,
 	      buttons: {
 	        "确定": function() {
+	        	 save();
+	        	 /*
 	          var bValid = true;
 	          allFields.removeClass( "ui-state-error" );
 	 
-	          bValid = bValid && checkLength( name, "username", 3, 16 );
+	          bValid = bValid && checkLength( username, "username", 3, 16 );
 	          bValid = bValid && checkLength( email, "email", 6, 80 );
 	          bValid = bValid && checkLength( password, "password", 5, 16 );
 	 
-	          bValid = bValid && checkRegexp( name, /^[a-z]([0-9a-z_])+$/i, "用户名必须由 a-z、0-9、下划线组成，且必须以字母开头。" );
+	          bValid = bValid && checkRegexp( username, /^[a-z]([0-9a-z_])+$/i, "用户名必须由 a-z、0-9、下划线组成，且必须以字母开头。" );
 	          bValid = bValid && checkRegexp( email, /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i, "eg. ui@jquery.com" );
 	          bValid = bValid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "密码字段只允许： a-z 0-9" );
-	 
+	          
 	          if ( bValid ) {
-	            $( "#users tbody" ).append( "<tr>" +
-	              "<td>" + name.val() + "</td>" +
-	              "<td>" + email.val() + "</td>" +
-	              "<td>" + password.val() + "</td>" +
-	            "</tr>" );
-	            $( this ).dialog( "close" );
+	        	  save();
+	          }else{
+	        	  $( "#users tbody" ).append( "<tr>" +
+	    	              "<td>" + username.val() + "</td>" +
+	    	              "<td>" + email.val() + "</td>" +
+	    	              "<td>" + password.val() + "</td>" +
+	    	            "</tr>" );
+	    	      $( this ).dialog( "close" );
 	          }
+	          */
 	        },
 	        '取消': function() {
 	          $( this ).dialog( "close" );
@@ -138,9 +161,7 @@ $(function() {
    
 
 });
-function edit(id){
-	$( "#dialog-form" ).dialog( "open" );
-}
+
 function jump(p,s){
 	var reg = /^\d*$/g; 
 	if(!reg.test(p)){
@@ -175,7 +196,7 @@ function del(id){
 
 </script>
 
-<form name="submitForm" action="<%=basePath%>user/getAllUser" method="post" onsubmit="jump(1,${pager.pageSize })">
+<form name="submitForm" action="<%=basePath%>user/list" method="post" onsubmit="jump(1,${pager.pageSize })">
 	<input type="hidden" name="currentPage">
 	<input type="hidden" name="pageSize">
 	<input type="hidden" name="pageCount" value="${pager.pageCount }">
@@ -197,16 +218,16 @@ function del(id){
 	</div>
 </div>
 
-<div id="dialog-form" title="创建新用户">
+<div id="dialog-form" title="创建新用户" style="font-size:1em;">
 	<p class="validateTips">新增用户</p>
-	<form>
+	<form id="userForm" action="<%=basePath%>user/saveUser" method="post">
 		<fieldset>
 			<label for="name">名字</label>
-			<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all">
+			<input type="text" name="username" id="username" class="text ui-corner-all">
 			<label for="email">邮箱</label>
-			<input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all">
+			<input type="text" name="email" id="email" value="" class="text  ui-corner-all">
 			<label for="password">密码</label>
-			<input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all">
+			<input type="password" name="password" id="password" value="" class="text  ui-corner-all">
 		</fieldset>
 	</form>
 </div>
@@ -271,11 +292,10 @@ var myEditor = new Slick.EditManager({
     }
 );
 
-/*************** 常规采购方案START *********************/
 var columnFilters=[];
 function fmtReqBillNo1(row, cell, value, columnDef, dataContex) {
 	if(value != null){
-		return "<a href='#' class='billNo_link' style='color: #2A33E1;' id='" + dataContex['id'] +"'>"+value+"</a>";
+		return "<a class='billNo_link' style='color: #2A33E1;' id='" + dataContex['id'] +"'>"+value+"</a>";
 	}	
 }
  
@@ -316,8 +336,7 @@ var columns1 = [
 	});
 	    
 	$('.billNo_link').live("click", function(){
-		var item = SkUtils.getActiveRow(grid);
-		var id=item.id;
+		$( "#dialog-form" ).dialog( "open" );
 	})
 	
 	$(grid.getHeaderRow()).delegate("select", "change", function (e) {

@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,27 +15,45 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
-import com.xhs.entity.menu.Menu;
+import com.xhs.controller.common.BaseAction;
+import com.xhs.entity.common.JsonResult;
 import com.xhs.entity.user.User;
-import com.xhs.service.menu.MenuService;
 import com.xhs.service.user.UserService;
 import com.xhs.util.Pager;
 
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class UserController  extends BaseAction {
 
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private MenuService menuService;
-
-	private Pager pager;
 	private User user;
-
+	
 	/**
-	 * 璺宠浆鍒版坊鍔犵敤鎴风晫闈�
-	 * 
+	 * 用户列表
+	 * @param model
+	 * @param username
+	 * @param password
+	 * @param request
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = "/list")
+	@ResponseBody
+	public ModelAndView list(ModelAndView model, User user, Pager pager, HttpServletRequest request) {
+		if (pager == null) {
+			pager = new Pager();
+		}
+		pager.setTotal(userService.userCount(user.getUsername(), user.getPassword()));
+		List<User> findAll = userService.getAllUserByPage(pager.getStartRecord(), pager.getPageSize(), user.getUsername(), user.getPassword());
+		request.setAttribute("userList", JSON.toJSONString(findAll));
+		request.setAttribute("pager", pager);
+		model.setViewName("/user/user_list");
+		return model;
+	}
+	
+	/**
+	 * 新增用户
 	 * @param request
 	 * @return
 	 */
@@ -46,8 +63,7 @@ public class UserController {
 	}
 
 	/**
-	 * 娣诲姞鐢ㄦ埛骞堕噸瀹氬悜
-	 * 
+	 * 新增用户
 	 * @param user
 	 * @param request
 	 * @return
@@ -66,8 +82,7 @@ public class UserController {
 	
 
 	/**
-	 * 缂栬緫鐢ㄦ埛
-	 * 
+	 * 更新用户
 	 * @param user
 	 * @param request
 	 * @return
@@ -83,10 +98,31 @@ public class UserController {
 			return "/common/error";
 		}
 	}
+	
+	/**
+	 * 更新用户
+	 * @param user
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/saveUser")
+	public void saveUser(User user, HttpServletResponse response) {
+		JsonResult result = new JsonResult(true);
+		if (!userService.save(user)) {
+			result.setSuccess(false);
+		}
+		response.setContentType("application/json");
+		try {
+			PrintWriter out = response.getWriter();
+			out.write(JSON.toJSONString(result));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 	/**
-	 * 鏍规嵁id鏌ヨ鍗曚釜鐢ㄦ埛
-	 * 
+	 * 查询用户
 	 * @param id
 	 * @param request
 	 * @return
@@ -99,8 +135,7 @@ public class UserController {
 	}
 
 	/**
-	 * 鍒犻櫎鐢ㄦ埛
-	 * 
+	 * 删除用户
 	 * @param id
 	 * @param request
 	 * @param response
@@ -111,9 +146,7 @@ public class UserController {
 		if (userService.delete(id)) {
 			result = "{\"result\":\"success\"}";
 		}
-
 		response.setContentType("application/json");
-
 		try {
 			PrintWriter out = response.getWriter();
 			out.write(result);
@@ -128,59 +161,7 @@ public class UserController {
 		model.setViewName("/index");
 		return model;
 	}
-
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	@ResponseBody
-	public ModelAndView Login(ModelAndView model, String username, String password, HttpServletRequest request, HttpSession session) {
-		User user = userService.checkLogin(username, password);
-		if (user != null) {
-			if (pager == null) {
-				pager = new Pager();
-			}
-			List<Menu> menuList = menuService.queryList();
-			request.setAttribute("menuList", menuList);
-			
-			request.setAttribute("pager", pager);
-			model.setViewName("/common/main");
-		} else {
-			model.addObject("msg", "error");
-			model.setViewName("/common/error");
-		}
-		return model;
-	}
-
-	/**
-	 * 鍒嗛〉+妯＄硦鏌ヨ鐢ㄦ埛鍒楄〃
-	 * 
-	 * @param model
-	 * @param username
-	 * @param password
-	 * @param request
-	 * @param session
-	 * @return
-	 */
-	@RequestMapping(value = "/getAllUser")
-	@ResponseBody
-	public ModelAndView getAllUser(ModelAndView model, User user, Pager pager, HttpServletRequest request) {
-		if (pager == null) {
-			pager = new Pager();
-		}
-		pager.setTotal(userService.userCount(user.getUsername(), user.getPassword()));
-		List<User> findAll = userService.getAllUserByPage(pager.getStartRecord(), pager.getPageSize(), user.getUsername(), user.getPassword());
-		request.setAttribute("userList", JSON.toJSONString(findAll));
-		request.setAttribute("pager", pager);
-		model.setViewName("/user/user_list");
-		return model;
-	}
-
-	public Pager getPager() {
-		return pager;
-	}
-
-	public void setPager(Pager pager) {
-		this.pager = pager;
-	}
-
+	
 	public User getUser() {
 		return user;
 	}

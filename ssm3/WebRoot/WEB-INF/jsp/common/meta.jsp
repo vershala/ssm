@@ -46,6 +46,7 @@
 <script src="jquery/development-bundle/ui/jquery.ui.dialog.js"></script>
 <script src="jquery/development-bundle/ui/jquery.ui.effect.js"></script>
 
+<script src="jquery/js/jquery.form.js"></script>
 
 <script src="jquery/slick/lib/jquery.event.drag-2.0.min.js"></script>
 <script src="jquery/slick/slick.core.js"></script>

@@ -13,11 +13,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.spi.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
+import com.xhs.controller.common.BaseAction;
 import com.xhs.entity.menu.Menu;
 import com.xhs.entity.user.User;
 import com.xhs.service.login.LoginService;
@@ -43,18 +42,19 @@ import com.xhs.service.menu.MenuService;
  */
 @Controller
 @RequestMapping("/login")
-public class LoginAction {
+public class LoginAction extends BaseAction {
 	@Autowired
 	private LoginService loginService;
 	
 	@Autowired
 	private MenuService menuService;
-	
+
 	private static final String SESSION_USER="SESSION_USER";
+	private final Log log = LogFactory.getLog("wss"); 
 	
 	@RequestMapping(value = "/index", method = RequestMethod.POST)
 	@ResponseBody
-	public ModelAndView index(ModelAndView model, String message, HttpServletRequest request, HttpSession session) {
+	public ModelAndView index(ModelAndView model, String message) {
 		model.addObject("msg", message);
 		model.setViewName("/index");
 		return model;
@@ -62,13 +62,12 @@ public class LoginAction {
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ResponseBody
-	public ModelAndView Login(ModelAndView model, String username, String password, HttpServletRequest request, HttpSession session) {
+	public ModelAndView Login(ModelAndView model, String username, String password) {
 		User user = loginService.login(username, password,"123456");
-		Log log = LogFactory.getLog("wss");  
 		if (user != null) {
 			List<Menu> menuList = menuService.queryList();
-			request.setAttribute("menuList", menuList);
-			saveUserToSession(user,request);
+			this.getRequest().setAttribute("menuList", menuList);
+			saveUserToSession(user);
 			model.setViewName("/common/main");
 			
 			log.debug(username+"登录成功！");
@@ -76,7 +75,7 @@ public class LoginAction {
 			model.addObject("msg", "error");
 			model.setViewName("/common/error");
 			
-			log.debug(username+"登录失败！");
+			log.debug(username+" 登录失败！");
 		}
 		return model;
 	}
@@ -84,16 +83,17 @@ public class LoginAction {
 	@RequestMapping("/logout")
 	public String logout(String userName, HttpServletRequest request) {
 		WebUtils.setSessionAttribute(request, SESSION_USER, null);
+		log.debug(userName+" 退出成功！");
 		return "redirect:/index.jsp";
-
 	}
 	
-	private void saveUserToSession(User user, HttpServletRequest request){
+	private void saveUserToSession(User user){
 		if (user == null || user instanceof Serializable) {
-            WebUtils.setSessionAttribute(request, SESSION_USER, user);
+            WebUtils.setSessionAttribute(this.getRequest(), SESSION_USER, user);
         } else {
             throw new IllegalArgumentException("putToSession failed to a non-serializable object: " + user);
         }
 	}
+	
 }
 

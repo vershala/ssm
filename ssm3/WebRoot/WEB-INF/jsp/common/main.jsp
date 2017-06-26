@@ -20,7 +20,7 @@
 	<%@ include file="/WEB-INF/jsp/common/menu.jsp"%>
 	<div id="content" class="col-lg-10 col-sm-10">
 		<div class="main-meun">
-			<IFRAME id="work" name="work" FRAMEBORDER="0" src="<%=basePath%>user/getAllUser" SCROLLING="AUTO" width="100%" height="700"></IFRAME>
+			<IFRAME id="work" name="work" FRAMEBORDER="0" src="<%=basePath%>user/list" SCROLLING="AUTO" width="100%" height="700"></IFRAME>
 		</div>
 	</div>
 
