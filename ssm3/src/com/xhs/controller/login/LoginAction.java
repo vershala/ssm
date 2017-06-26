@@ -15,6 +15,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.spi.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,17 +64,19 @@ public class LoginAction {
 	@ResponseBody
 	public ModelAndView Login(ModelAndView model, String username, String password, HttpServletRequest request, HttpSession session) {
 		User user = loginService.login(username, password,"123456");
+		Log log = LogFactory.getLog("wss");  
 		if (user != null) {
-
 			List<Menu> menuList = menuService.queryList();
 			request.setAttribute("menuList", menuList);
-			
 			saveUserToSession(user,request);
-			
 			model.setViewName("/common/main");
+			
+			log.debug(username+"登录成功！");
 		} else {
 			model.addObject("msg", "error");
 			model.setViewName("/common/error");
+			
+			log.debug(username+"登录失败！");
 		}
 		return model;
 	}
@@ -87,8 +92,7 @@ public class LoginAction {
 		if (user == null || user instanceof Serializable) {
             WebUtils.setSessionAttribute(request, SESSION_USER, user);
         } else {
-            throw new IllegalArgumentException(
-                    "putToSession failed to a non-serializable object: " + user);
+            throw new IllegalArgumentException("putToSession failed to a non-serializable object: " + user);
         }
 	}
 }

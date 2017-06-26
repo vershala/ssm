@@ -10,7 +10,6 @@
 package com.xhs.interceptor;
 
 import java.io.PrintWriter;
-import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,7 +45,6 @@ public class CommonInterceptor extends HandlerInterceptorAdapter {
 		log.info("requestUri:" + requestUri);
 		log.info("contextPath:" + contextPath);
 		log.info("url:" + url);
-
 		User user = (User) request.getSession().getAttribute("SESSION_USER");
 		if (user == null) {
 			response.setCharacterEncoding("UTF-8");
