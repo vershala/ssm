@@ -198,7 +198,7 @@ function del(id){
 </div>
 
 <div id="dialog-form" title="创建新用户">
-	<p class="validateTips">说明在这里</p>
+	<p class="validateTips">新增用户</p>
 	<form>
 		<fieldset>
 			<label for="name">名字</label>
