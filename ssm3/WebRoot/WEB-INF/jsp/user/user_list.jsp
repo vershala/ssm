@@ -184,7 +184,7 @@ function del(id){
 <div class="row" style="height:95%;">
 	<div class="box col-md-12" style="height:95%;">
 		<div class="box-inner" style="height:95%;">
-			<div class="box-content"  style="height:95%;">
+			<div class="box-content" style="height:95%;">
 				<div class="cm_tab_con mt_8">
 	<div id="tabA">
 		<div class="grid_wrap">
