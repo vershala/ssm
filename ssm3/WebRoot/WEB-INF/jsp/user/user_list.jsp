@@ -125,8 +125,6 @@ $(function() {
 	      modal: true,
 	      buttons: {
 	        "确定": function() {
-	        	 save();
-	        	 /*
 	          var bValid = true;
 	          allFields.removeClass( "ui-state-error" );
 	 
@@ -148,7 +146,6 @@ $(function() {
 	    	            "</tr>" );
 	    	      $( this ).dialog( "close" );
 	          }
-	          */
 	        },
 	        '取消': function() {
 	          $( this ).dialog( "close" );
@@ -162,20 +159,6 @@ $(function() {
 
 });
 
-function jump(p,s){
-	var reg = /^\d*$/g; 
-	if(!reg.test(p)){
-		var p = 1;
-	}
-	if(parseInt(p) < 1){
-		p = 1;
-	}else if(parseInt(p) > parseInt(document.submitForm.pageCount.value)){  
-		p = parseInt(document.submitForm.pageCount.value);
-	}	
-	document.submitForm.currentPage.value=p;
-	document.submitForm.pageSize.value=s;
-	document.submitForm.submit();
-}	
 function color(a,index){
 	if(index % 2 == 0){
 		a.style.background='#F0F0F0';
@@ -196,11 +179,6 @@ function del(id){
 
 </script>
 
-<form name="submitForm" action="<%=basePath%>user/list" method="post" onsubmit="jump(1,${pager.pageSize })">
-	<input type="hidden" name="currentPage">
-	<input type="hidden" name="pageSize">
-	<input type="hidden" name="pageCount" value="${pager.pageCount }">
-</form>
 
 <div class="row" style="height:95%;">
 	<div class="box col-md-12" style="height:95%;">
@@ -298,18 +276,32 @@ function fmtReqBillNo1(row, cell, value, columnDef, dataContex) {
 		return "<a class='billNo_link' style='color: #2A33E1;' id='" + dataContex['id'] +"'>"+value+"</a>";
 	}	
 }
- 
+var _parms={};
+var loader = new Slick.Data.RemoteModel({
+    'url': "<%=basePath%>user/listJson", 
+    'pageSize':50,
+    'parms': _parms
+}) 
 var columns1 = [
 	checkboxSelector.getColumnDefinition(), 
-	{id:"no",name:"序号",field: "_no_" ,cssClass:"slick-cell-checkboxsel cell-center", width:60},
+	{id: "index",  name: "序号", width: 45,formatter: idFormatter , cssClass:"cell-center slick-cell-checkboxsel"},
     {id: "username", name: "用户名", field: "username",width:145,cssClass:"cell-center",formatter: fmtReqBillNo1},
     {id: "fullname", name: "姓名", field: "fullname",width:385,cssClass:"cell-center",formatter: fmtReqBillNo1},
 	{id:"sex",name:"状态",field: "sex" , width:90,cssClass:"cell-center", formatter: formatter},
 	{id: "password", name: "申请人", field: "password",width:85,cssClass:"cell-center"}
   ];
-
-	var dtlData = ${userList};
-	grid = new Slick.Grid("#myGrid1",new Slick.Data.Model({"data": dtlData}) , columns1, options);
+var refresh = function() {
+    var load_parms = $.extend(_parms,columnFilters);
+   loader.setParms(load_parms);
+    var vp = grid.getViewport();
+    loader.ensureData(vp.top, vp.bottom);
+    
+    return false;
+}
+	
+	grid = new Slick.Grid("#myGrid1",loader.data , columns1, options);
+	//var dtlData = ${userList};
+	//grid = new Slick.Grid("#myGrid1",new Slick.Data.Model({"data": dtlData}) , columns1, options);
 	grid.setSelectionModel(new Slick.RowSelectionModel({selectActiveRow: true}));
 	grid.registerPlugin(checkboxSelector);
 	grid.registerPlugin(myEditor);
@@ -358,6 +350,7 @@ var columns1 = [
 	  }
 	});
 	grid.init();
+	loader.applyGrid(grid, "#myGrid1");
 /*************** 常规采购方案START *********************/
 
 

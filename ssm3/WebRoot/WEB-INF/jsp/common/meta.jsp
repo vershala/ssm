@@ -58,3 +58,4 @@
 <script src="jquery/slick/plugins/slick.editmanager.js"></script>
 <script src="jquery/slick/plugins/slick.model.js"></script>
 <script src="jquery/slick/slick.utils.js"></script>
+<script src="jquery/slick/slick.remotemodel.js"></script>

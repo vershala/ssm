@@ -15,6 +15,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -22,14 +23,14 @@ import java.util.TreeMap;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.alibaba.fastjson.JSON;
 import com.xhs.entity.common.JsonResult;
-import com.xhs.util.Pager;
+import com.xhs.entity.common.Pagination;
 import com.xhs.util.UtilString;
 
 /**
@@ -44,19 +45,34 @@ import com.xhs.util.UtilString;
  * @see
  */
 public class BaseAction {
-	private Pager pager;
-	public Pager getPager() {
-		return pager;
-	}
 
-	public void setPager(Pager pager) {
-		this.pager = pager;
-	}
+	protected HttpServletRequest request;
 
+	protected HttpServletResponse response;
+
+	protected HttpSession session;
+
+	@ModelAttribute
+	public void setReqAndRes(HttpServletRequest request, HttpServletResponse response) {
+
+		this.request = request;
+
+		this.response = response;
+
+	}
+	
 	protected HttpServletRequest getRequest() {
-		return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		return request;
 	}
-
+	
+	protected HttpServletResponse getResponse() {
+		return response;
+	}
+	
+	protected HttpSession getSession() {
+		return session;
+	}
+	
 	protected ServletContext getContext() {
 		HttpServletRequest request = getRequest();
 		if (request != null) {
@@ -65,8 +81,29 @@ public class BaseAction {
 
 		return null;
 	}
-
-	protected void jsonString(JsonResult result, HttpServletResponse response) {
+	
+	/*
+	protected HttpServletRequest getRequest() {
+		return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+	}
+	*/
+	
+	protected void forwardJson(Pagination pagination, List<?> data) {
+		response.setContentType("application/json");
+		Map<String,Object> map=new HashMap<String, Object>();
+		map.put("total",pagination.getTotalCount());
+		map.put("count",data.size());
+		map.put("data", data);
+		response.setContentType("application/json");
+		try {
+			PrintWriter out = response.getWriter();
+			out.write(JSON.toJSONString(map));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	protected void jsonString(JsonResult result) {
 		response.setContentType("application/json");
 		try {
 			PrintWriter out = response.getWriter();
@@ -74,6 +111,17 @@ public class BaseAction {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+
+	public Map<String, Object> getParameters() {
+		return getParametersStartingWith(null);
+	}
+
+	public String getRequestParameter(String reqkey) {
+		String val = this.getRequest().getParameter(reqkey);
+		val = StringUtils.deleteWhitespace(val);
+		return val;
 	}
 
 	@SuppressWarnings("unchecked")

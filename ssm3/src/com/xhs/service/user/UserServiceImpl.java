@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.xhs.entity.common.Pagination;
 import com.xhs.entity.user.User;
 import com.xhs.mapper.user.UserMapper;
 import com.xhs.service.common.SqlSessionService;
@@ -78,5 +79,13 @@ public class UserServiceImpl extends SqlSessionService implements UserService {
 		parms.put("username", username);
 		parms.put("password", password);
 		return sqlSession.selectList("com.xhs.mapper.user.UserMapper.getAllUserByPage",parms);
+	}
+	
+	public List<Map<String,Object>> queryList(Map<String,Object> parms) {
+		return sqlSession.selectList("com.xhs.mapper.user.UserMapper.queryList",parms);
+	}
+	
+	public List<Map<String,Object>> queryList(Map<String,Object> parms,Pagination pagination) {
+		return sqlSession.selectList("com.xhs.mapper.user.UserMapper.queryList",parms,pagination);
 	}
 }

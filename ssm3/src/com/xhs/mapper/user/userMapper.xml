@@ -132,6 +132,18 @@
 		select * from tb_user where username=#{username}
 	</select>
 	
+	<select id="queryList" resultMap="user" parameterType="String">
+		select * from tb_user 
+		<where>
+			<if test="username != null and username != ''">
+				and username like '%${username}%'
+			</if>
+			<if test="password != null and password != ''">
+				and password like '%${password}%'
+			</if>
+		</where>
+	</select>
+	
 	<!-- 分页查+模糊查询 -->
 	<select id="getAllUserByPage" resultMap="user" parameterType="String">
 		select * from tb_user 

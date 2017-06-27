@@ -24,7 +24,7 @@ import com.xhs.service.user.UserService;
 
 @Controller
 @RequestMapping("/user")
-public class UserController  extends BaseAction {
+public class UserAction  extends BaseAction {
 
 	@Autowired
 	private UserService userService;

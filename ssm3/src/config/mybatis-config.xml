@@ -12,5 +12,9 @@
 		<typeAlias alias="UserMenu" type="com.xhs.entity.user.UserMenu" />
 		<typeAlias alias="CamelCaseKeyMap" type="com.xhs.entity.common.CamelCaseKeyMap" />
 	</typeAliases>
-	
+	<plugins>
+		<plugin
+			interceptor="com.xhs.interceptor.PaginationInterceptor">
+		</plugin>
+	</plugins>
 </configuration>  
