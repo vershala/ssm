@@ -12,7 +12,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,15 +27,10 @@ public class UserAction  extends BaseAction {
 
 	@Autowired
 	private UserService userService;
-	private User user;
 	
 	/**
 	 * 用户列表
 	 * @param model
-	 * @param username
-	 * @param password
-	 * @param request
-	 * @param session
 	 * @return
 	 */
 	@RequestMapping(value = "/list")
@@ -47,8 +41,7 @@ public class UserAction  extends BaseAction {
 	}
 	
 	@RequestMapping("/listJson")
-	@ResponseBody
-	public void listJson(HttpServletResponse response) {
+	public void listJson() {
 		int offset = NumberUtils.toInt(this.getRequestParameter("page.offset"));
 		int limit = NumberUtils.toInt(this.getRequestParameter("page.count"));
 		Pagination pagination = new Pagination(offset, limit);
@@ -63,7 +56,7 @@ public class UserAction  extends BaseAction {
 	 * @return
 	 */
 	@RequestMapping("/toAddUser")
-	public String toAddUser(HttpServletRequest request) {
+	public String toAddUser() {
 		return "/user/addUser";
 	}
 
@@ -83,25 +76,6 @@ public class UserAction  extends BaseAction {
 			return "/common/error";
 		}
 
-	}
-	
-
-	/**
-	 * 更新用户
-	 * @param user
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping("/updateUser")
-	public String updateUser(User user, HttpServletRequest request) {
-
-		if (userService.update(user)) {
-			user = userService.findById(user.getId());
-			request.setAttribute("user", user);
-			return "redirect:/user/getAllUser";
-		} else {
-			return "/common/error";
-		}
 	}
 	
 	/**
@@ -153,20 +127,6 @@ public class UserAction  extends BaseAction {
 			e.printStackTrace();
 		}
 
-	}
-
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView toLogin(ModelAndView model) {
-		model.setViewName("/index");
-		return model;
-	}
-	
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 }

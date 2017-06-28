@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<typeAliases>
+		<typeAlias alias="User" type="com.wss.model.user.User" />
+		<typeAlias alias="Role" type="com.wss.model.role.Role" />
+		<typeAlias alias="Menu" type="com.wss.model.menu.Menu" />
+		<typeAlias alias="UserRole" type="com.wss.model.user.UserRole" />
+		<typeAlias alias="RoleMenu" type="com.wss.model.user.RoleMenu" />
+		<typeAlias alias="UserMenu" type="com.wss.model.user.UserMenu" />
+		<typeAlias alias="CamelCaseKeyMap" type="com.wss.model.common.CamelCaseKeyMap" />
+	</typeAliases>
+	<plugins>
+		<plugin
+			interceptor="com.wss.interceptor.PaginationInterceptor">
+		</plugin>
+	</plugins>
+</configuration>  

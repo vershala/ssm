@@ -2,7 +2,7 @@
  * Project Name:ssm3
  * File Name:UserSession.java
  * Package Name:com.xhs.entity.common
- * Date:2017Äê6ÔÂ22ÈÕÏÂÎç5:14:04
+ * Date:2017ï¿½ï¿½6ï¿½ï¿½22ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½5:14:04
  * Copyright (c) 2017, chenzhou1025@126.com All Rights Reserved.
  *
 */
@@ -17,7 +17,7 @@ import org.apache.commons.collections.map.CaseInsensitiveMap;
  * ClassName:UserSession <br/>
  * Function: TODO ADD FUNCTION. <br/>
  * Reason:	 TODO ADD REASON. <br/>
- * Date:     2017Äê6ÔÂ22ÈÕ ÏÂÎç5:14:04 <br/>
+ * Date:     2017ï¿½ï¿½6ï¿½ï¿½22ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½5:14:04 <br/>
  * @author   Administrator
  * @version  
  * @since    JDK 1.6
@@ -28,6 +28,18 @@ public class UserSession {
 	
 	public static UserData getCurrent() {
 		return UserLocal.get();
+	}
+	
+	public static void setCurrent(UserData user) {
+		UserLocal.set(user);
+	}
+	
+	public static void destory() {
+		UserData data = getCurrent();
+		if (data != null) {
+			data.clear();
+		}
+		setCurrent(new UserData());
 	}
 	
 	public static String getUserName() {
@@ -67,8 +79,7 @@ public class UserSession {
 
 		public UserData() {
 		}
-
-
+		
 		public String getUserName() {
 			if (getCurrent() == null) {
 				return "null thread";

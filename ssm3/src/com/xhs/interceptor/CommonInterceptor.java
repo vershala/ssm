@@ -11,17 +11,15 @@ package com.xhs.interceptor;
 
 import java.io.PrintWriter;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.xhs.entity.common.UserSession;
 import com.xhs.entity.user.User;
 
 /**
@@ -57,9 +55,11 @@ public class CommonInterceptor extends HandlerInterceptorAdapter {
 	        out.println("</script>");      
 	        out.println("</html>");    
 	        return false;  
-			//request.getRequestDispatcher("/common/index.jsp").forward(request, response);
-			//return false;
-		} else
+		} else{
+			UserSession.destory();
+			UserSession.setUserName(user.getUsername());
+			UserSession.setRealName(user.getFullname());
+		}
 			return true;
 	}
 
