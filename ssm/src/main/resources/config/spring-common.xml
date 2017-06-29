@@ -41,7 +41,7 @@
 	</bean>
 
 	<!--通过模板定制mybatis的行为 -->  
-	<bean id="sqlSessionTemplateBatch" class="org.mybatis.spring.SqlSessionTemplate">     
+	<bean id="sqlSessionTemplateBatch" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">     
 		<constructor-arg index="0" ref="sqlSessionFactory" />  
 		<!--更新采用批量模式 -->  
 		<constructor-arg index="1" value="BATCH"/>  

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="mappers.mysql.roleMenuMapper" >
+<mapper namespace="com.wss.dao.role.RoleMapper" >
 
-  <resultMap id="BaseResultMap" type="RoleMenu" >
-    <result column="role_cd" property="roleCd" jdbcType="VARCHAR" />
+  <resultMap id="BaseResultMap" type="Role" >
+    <id column="role_cd" property="roleCd" jdbcType="VARCHAR" />
     <result column="role_name" property="roleName" jdbcType="VARCHAR" />
-    <result column="menu_cd" property="menuCd" jdbcType="VARCHAR" />
-    <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+    <result column="enable_flag" property="enableFlag" jdbcType="VARCHAR" />
+    <result column="notes" property="notes" jdbcType="VARCHAR" />
     <result column="create_user" property="createUser" jdbcType="VARCHAR" />
     <result column="create_method" property="createMethod" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -15,8 +15,8 @@
     <result column="last_upd_time" property="lastUpdTime" jdbcType="TIMESTAMP" />
   </resultMap>
   
-  <insert id="insert" parameterType="RoleMenu" >
-    insert into tb_role_menu
+  <insert id="insert" parameterType="Role" >
+    insert into tb_role
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="roleCd != null" >
         role_cd,
@@ -24,11 +24,11 @@
       <if test="roleName != null" >
         role_name,
       </if>
-      <if test="menuCd != null" >
-        menu_cd,
+      <if test="enableFlag != null" >
+        enable_flag,
       </if>
-      <if test="menuName != null" >
-        menu_name,
+      <if test="notes != null" >
+        notes,
       </if>
       <if test="createUser != null" >
         create_user,
@@ -56,11 +56,11 @@
       <if test="roleName != null" >
         #{roleName,jdbcType=VARCHAR},
       </if>
-      <if test="menuCd != null" >
-        #{menuCd,jdbcType=VARCHAR},
+      <if test="enableFlag != null" >
+        #{enableFlag,jdbcType=VARCHAR},
       </if>
-      <if test="menuName != null" >
-        #{menuName,jdbcType=VARCHAR},
+      <if test="notes != null" >
+        #{notes,jdbcType=VARCHAR},
       </if>
       <if test="createUser != null" >
         #{createUser,jdbcType=VARCHAR},
@@ -82,21 +82,21 @@
       </if>
     </trim>
   </insert>
+  <select id="count" parameterType="String" resultType="int" >
+    select count(*) from tb_role
+  </select>
   
-  <update id="update" parameterType="map" >
-    update tb_role_menu
+  <update id="update" parameterType="Role" >
+    update tb_role
     <set >
-      <if test="roleCd != null" >
-        role_cd = #{roleCd,jdbcType=VARCHAR},
-      </if>
       <if test="roleName != null" >
         role_name = #{roleName,jdbcType=VARCHAR},
       </if>
-      <if test="menuCd != null" >
-        menu_cd = #{menuCd,jdbcType=VARCHAR},
+      <if test="enableFlag != null" >
+        enable_flag = #{enableFlag,jdbcType=VARCHAR},
       </if>
-      <if test="menuName != null" >
-        menu_name = #{menuName,jdbcType=VARCHAR},
+      <if test="notes != null" >
+        notes = #{notes,jdbcType=VARCHAR},
       </if>
       <if test="createUser != null" >
         create_user = #{createUser,jdbcType=VARCHAR},
@@ -117,7 +117,7 @@
         last_upd_time = #{lastUpdTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where menu_cd = #{menuCd}
+    where role_cd = #{roleCd,jdbcType=VARCHAR}
   </update>
-  
+ 
 </mapper>
