@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wss.dao.log.LogMapper">
+	
+	<insert id="insert" parameterType="OperateLog">
+		insert into log_tbl
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="userName != null" >
+	        user_name,
+	      </if>
+	      <if test="function != null" >
+	        function,
+	      </if>
+	      <if test="ip != null" >
+	        ip,
+	      </if>
+	      <if test="operate != null" >
+	        operate,
+	      </if>
+	      <if test="method != null" >
+	        method,
+	      </if>
+	      <if test="params != null" >
+	        params,
+	      </if>
+	      <if test="message != null" >
+	        message,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="userName != null" >
+	        #{userName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="function != null" >
+	        #{function,jdbcType=VARCHAR},
+	      </if>
+	      <if test="ip != null" >
+	        #{ip,jdbcType=VARCHAR},
+	      </if>
+	      <if test="operate != null" >
+	        #{operate,jdbcType=VARCHAR},
+	      </if>
+	      <if test="method != null" >
+	        #{method,jdbcType=VARCHAR},
+	      </if>
+	      <if test="params != null" >
+	        #{params,jdbcType=VARCHAR},
+	      </if>
+	      <if test="message != null" >
+	        #{message,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+	</insert>
+	
+</mapper>

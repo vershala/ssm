@@ -34,8 +34,8 @@ public class Aop {
 		// System.out.println("@after" + point.getTarget());
 	}
 
-	@Around("execution(* com.wss.service..*.*Impl.*(..))")
-	public void getCacheKey(ProceedingJoinPoint joinPoint) {
+	@Around("execution(* com.wss.service1..*.*Impl.*(..))")
+	public Object getCacheKey(ProceedingJoinPoint joinPoint) {
 
 		MethodSignature ms = (MethodSignature) joinPoint.getSignature();
 		Method method = ms.getMethod();
@@ -56,5 +56,6 @@ public class Aop {
             e.printStackTrace();  
         }  
         System.out.println("object is  "+object);
+        return object;
 	}
 }

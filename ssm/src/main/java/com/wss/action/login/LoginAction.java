@@ -16,12 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
 import com.wss.action.common.BaseAction;
@@ -50,40 +49,35 @@ public class LoginAction extends BaseAction {
 	private MenuService menuService;
 
 	private static final String SESSION_USER="SESSION_USER";
-	private final Log log = LogFactory.getLog("wss"); 
+	private final Log log = LogFactory.getLog("login"); 
 	
-	@RequestMapping(value = "/index", method = RequestMethod.POST)
-	@ResponseBody
-	public ModelAndView index(ModelAndView model, String message) {
-		model.addObject("msg", message);
-		model.setViewName("/index");
-		return model;
+	@RequestMapping(value = "/index")
+	public String index() {
+		return "redirect:/index.jsp";
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	@ResponseBody
-	public ModelAndView Login(ModelAndView model, String username, String password) {
+	public String Login( String username, String password) {
 		User user = loginService.login(username, password,"123456");
 		if (user != null) {
 			List<Menu> menuList = menuService.queryList();
 			this.getRequest().setAttribute("menuList", menuList);
+			
 			saveUserToSession(user);
-			model.setViewName("/common/main");
 			
-			log.debug(username+"登录成功�?");
+			MDC.put("ip", request.getLocalAddr());  
+			log.info(username+" login success!");
+			return "/common/main";
 		} else {
-			model.addObject("msg", "error");
-			model.setViewName("/common/error");
-			
-			log.debug(username+" 登录失败�?");
+			log.info(username+" login failed!");
+			return "redirect:/index.jsp";
 		}
-		return model;
 	}
 	
 	@RequestMapping("/logout")
 	public String logout(String userName, HttpServletRequest request) {
 		WebUtils.setSessionAttribute(request, SESSION_USER, null);
-		log.debug(userName+" �?出成功！");
+		log.debug(userName+" logout success！");
 		return "redirect:/index.jsp";
 	}
 	

@@ -10,17 +10,27 @@
 package com.wss.interceptor;
 
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.alibaba.fastjson.JSON;
+import com.wss.log.BaseLogger;
+import com.wss.log.OperateLog;
 import com.wss.model.common.UserSession;
 import com.wss.model.user.User;
+import com.wss.util.UtilString;
 
 /**
  * ClassName:CommonInterceptor <br/>
@@ -32,22 +42,11 @@ import com.wss.model.user.User;
  * @see
  */
 public class CommonInterceptor extends HandlerInterceptorAdapter {
-	private final Logger log = LoggerFactory.getLogger(CommonInterceptor.class);
 
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
-		log.info("============== start preHandle================"+request.getRequestURI());
-		String requestUri = request.getRequestURI();
-		String contextPath = request.getContextPath();
-		String url = requestUri.substring(contextPath.length());
-
-		log.info("requestUri:" + requestUri);
-		log.info("contextPath:" + contextPath);
-		log.info("url:" + url);
 		User user = (User) request.getSession().getAttribute("SESSION_USER");
 		if (user == null) {
 			response.setCharacterEncoding("UTF-8");
-			log.info("Interceptor返回登录页面");
 	        PrintWriter out = response.getWriter();  
 	        out.println("<html>");      
 	        out.println("<script>");      
@@ -59,19 +58,67 @@ public class CommonInterceptor extends HandlerInterceptorAdapter {
 			UserSession.destory();
 			UserSession.setUserName(user.getUsername());
 			UserSession.setRealName(user.getFullname());
+			OperateLog log = new OperateLog();
+			log.setUserName(user.getUsername());
+			log.setOperate(request.getRequestURI());
+			log.setMethod(request.getMethod());
+			log.setParams(JSON.toJSONString(getParams(request)));
+			log.setIp(request.getLocalAddr());
+            BaseLogger.operateLog(log);
 		}
 			return true;
 	}
 
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-		log.info("==============2返回结果页面postHandle================");
-		if (modelAndView != null) { 
-			modelAndView.addObject("var","aaa");
-		}
+		
 	}
 
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-		log.info("==============3处理结束afterCompletion================");
 	}
-
+	
+	
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> getParams(HttpServletRequest request) {
+		String prefix = "";
+		Map<String, Object> params = new TreeMap<String, Object>();
+		String method = request.getMethod();
+		if (StringUtils.equalsIgnoreCase("GET", method)) {
+			String queryString = request.getQueryString();
+			if (StringUtils.isEmpty(queryString)) {
+				return params;
+			}
+			String encoding = StringUtils.defaultString(request.getCharacterEncoding(), "UTF-8");
+			try {
+				queryString = URLDecoder.decode(queryString, encoding);
+				List<String> list1 = UtilString.toList(queryString, '&');
+				List<String> buff = new ArrayList<String>(2);
+				for (String str : list1) {
+					UtilString.toList(str, '=', buff);
+					if (buff.size() > 1) {
+						params.put(buff.get(0), buff.get(1));
+					}
+				}
+			} catch (UnsupportedEncodingException e) {
+			}
+		} else {
+			Enumeration<String> paramNames = request.getParameterNames();
+			while (paramNames != null && paramNames.hasMoreElements()) {
+				String paramName = (String) paramNames.nextElement();
+				if ("".equals(prefix) || paramName.startsWith(prefix)) {
+					String unprefixed = paramName.substring(prefix.length());
+					String[] values = request.getParameterValues(paramName);
+					if (values == null || values.length == 0) {
+					} else if (values.length > 1) {
+						params.put(unprefixed, values);
+					} else {
+						String val = StringUtils.trim(values[0]);
+						if (val.length() != 0) {
+							params.put(unprefixed, val);
+						}
+					}
+				}
+			}
+		}
+		return params;
+	}
 }

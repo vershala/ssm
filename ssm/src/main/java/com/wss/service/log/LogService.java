@@ -8,6 +8,9 @@
 */
 
 package com.wss.service.log;
+
+import com.wss.log.OperateLog;
+
 /**
  * ClassName:LogService <br/>
  * Function: TODO ADD FUNCTION. <br/>
@@ -19,6 +22,7 @@ package com.wss.service.log;
  * @see 	 
  */
 public interface LogService {
-
+	
+	public void insert(OperateLog log);
 }
 
