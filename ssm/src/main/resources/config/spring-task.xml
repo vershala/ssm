@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:task="http://www.springframework.org/schema/task" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	http://www.springframework.org/schema/task 
+	http://www.springframework.org/schema/task/spring-task-4.3.xsd">
+	<!-- 
+	<bean id="task" class="com.wss.task.SpringTask1"/>  
+	<task:scheduled-tasks>   
+    	<task:scheduled ref="task" method="execute" cron="0/5 * * * * ?"/>   
+	</task:scheduled-tasks>  
+	
+	<task:scheduler id="qbScheduler" pool-size="10"/>  
+	<task:annotation-driven scheduler="qbScheduler" mode="proxy"/> 
+	 -->
+ </beans>

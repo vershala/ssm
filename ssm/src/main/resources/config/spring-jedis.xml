@@ -2,18 +2,20 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
-	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
 	http://www.springframework.org/schema/context 
-	http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/context/spring-context-4.3.xsd
 	http://www.springframework.org/schema/aop 
-	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd 
+	http://www.springframework.org/schema/aop/spring-aop-4.3.xsd 
 	http://www.springframework.org/schema/tx 
-	http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
 	http://www.springframework.org/schema/util 
-	http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+	http://www.springframework.org/schema/util/spring-util-4.3.xsd">
 	<!-- 连接池配置 -->
+	<!--  -->
 	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
 		<!-- 最大连接数 -->
 		<property name="maxTotal" value="30" />
@@ -38,11 +40,12 @@
 	</bean>	
 	<!-- jedis客户端单机版 -->
 	<bean id="redisClient" class="redis.clients.jedis.JedisPool">
-		<constructor-arg name="host" value="10.70.148.217"></constructor-arg>
+		<constructor-arg name="host" value="10.70.148.87"></constructor-arg>
 		<constructor-arg name="port" value="6379"></constructor-arg>
 		<constructor-arg name="poolConfig" ref="jedisPoolConfig"></constructor-arg>
 	</bean> 
 	 
+
 	<!-- <bean id="jedisClient" class="cn.sys.auth.redisCach.JedisClientSingleService"/>  -->
 	<!-- jedis集群版配置 -->
 	<!--  <bean id="redisClient" class="redis.clients.jedis.JedisCluster">

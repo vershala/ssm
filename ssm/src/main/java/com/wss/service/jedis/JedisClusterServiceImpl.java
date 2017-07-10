@@ -1,5 +1,7 @@
 package com.wss.service.jedis;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import redis.clients.jedis.JedisCluster;
@@ -57,5 +59,15 @@ public class JedisClusterServiceImpl implements JedisService{
 	public long hdel(String hkey, String key) {
 		
 		return jedisCluster.hdel(hkey, key);
+	}
+
+	@Override
+	public Set<String> keys(String preStr) {
+		return null;
+	}
+
+	@Override
+	public void batchDel(Set<String> keys) {
+		
 	}
 }

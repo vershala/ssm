@@ -9,6 +9,7 @@
 
 package com.wss.service.log;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.wss.log.OperateLog;
@@ -27,8 +28,12 @@ import com.wss.service.common.SqlSessionService;
 @Service
 public class LogServiceImpl extends SqlSessionService implements LogService {
 
-	public void insert(OperateLog log) {
-		sqlSession.insert("com.wss.dao.log.LogMapper.insert",log);
+	public void insert(OperateLog log) throws DataAccessException{
+		try{
+			sqlSession.insert("com.wss.dao.log.LogMapper.insert",log);
+		}catch (DataAccessException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 }

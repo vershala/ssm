@@ -56,7 +56,7 @@ public class BaseAction {
 	public void setReqAndRes(HttpServletRequest request, HttpServletResponse response) {
 
 		this.request = request;
-
+		
 		this.response = response;
 
 	}

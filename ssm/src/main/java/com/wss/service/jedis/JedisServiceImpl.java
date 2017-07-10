@@ -1,5 +1,8 @@
 package com.wss.service.jedis;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,13 @@ public class JedisServiceImpl implements JedisService {
 		String string = jedis.get(key);
 		jedis.close();
 		return string;
+	}
+	
+	@Override
+	public Set<String> keys(String preStr) {
+		Jedis jedis = jedisPool.getResource();
+		Set<String> set = jedis.keys(preStr +"*");  
+		return set;
 	}
 
 	@Override
@@ -73,6 +83,16 @@ public class JedisServiceImpl implements JedisService {
 		Long result = jedis.del(key);
 		jedis.close();
 		return result;
+	}
+	
+	public void batchDel(Set<String> keys){
+		Jedis jedis = jedisPool.getResource();
+		Iterator<String> it = keys.iterator();  
+        while(it.hasNext()){  
+            String key = it.next();  
+            jedis.del(key);  
+        }  
+        jedis.close();
 	}
 
 	@Override

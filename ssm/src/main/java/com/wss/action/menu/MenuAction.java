@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.wss.model.menu.Menu;
+import com.wss.service.jedis.JedisService;
 import com.wss.service.menu.MenuService;
 import com.wss.util.Pager;
 
@@ -19,6 +20,8 @@ import com.wss.util.Pager;
 public class MenuAction {
 	@Autowired
 	private MenuService menuService;
+	@Autowired
+	JedisService service;
 
 	private Pager pager;
 	private Menu menu;
@@ -37,6 +40,7 @@ public class MenuAction {
 		if (pager == null) {
 			pager = new Pager();
 		}
+		System.out.println(request.getSession().getId());
 		if (menu == null) {
 			menu = new Menu();
 		}
