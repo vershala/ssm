@@ -10,12 +10,12 @@
 		<typeAlias alias="UserRole" type="com.wss.model.user.UserRole" />
 		<typeAlias alias="RoleMenu" type="com.wss.model.user.RoleMenu" />
 		<typeAlias alias="UserMenu" type="com.wss.model.user.UserMenu" />
-		<typeAlias alias="OperateLog" type="com.wss.log.OperateLog" />
+		<typeAlias alias="OperateLog" type="com.wss.model.log.OperateLog" />
 		<typeAlias alias="CamelCaseKeyMap" type="com.wss.model.common.CamelCaseKeyMap" />
 	</typeAliases>
 	<plugins>
 		<plugin
-			interceptor="com.wss.interceptor.PaginationInterceptor">
+			interceptor="com.wss.common.interceptor.PaginationInterceptor">
 		</plugin>
 	</plugins>
 </configuration>  

@@ -7,7 +7,7 @@
 	http://www.springframework.org/schema/task 
 	http://www.springframework.org/schema/task/spring-task-4.3.xsd">
 	<!-- 
-	<bean id="task" class="com.wss.task.SpringTask1"/>  
+	<bean id="task" class="com.wss.common.task.SpringTask1"/>  
 	<task:scheduled-tasks>   
     	<task:scheduled ref="task" method="execute" cron="0/5 * * * * ?"/>   
 	</task:scheduled-tasks>  

@@ -1,4 +1,4 @@
-package com.wss.interceptor;
+package com.wss.common.interceptor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,6 +27,7 @@ import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.RowBounds;
 
+import com.wss.common.dataSource.DbContextHolder;
 import com.wss.model.common.Pagination;
 
 @Intercepts({ @Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class }) })
@@ -37,30 +38,30 @@ public class PaginationInterceptor implements Interceptor {
 
 	protected static Log log = LogFactory.getLog(PaginationInterceptor.class);
 	/**
-     * 默认ObjectFactory
-     */
-    private static final ObjectFactory DEFAULT_OBJECT_FACTORY = new DefaultObjectFactory();
-    /**
-     * 默认ObjectWrapperFactory
-     */
-    private static final ObjectWrapperFactory DEFAULT_OBJECT_WRAPPER_FACTORY = new DefaultObjectWrapperFactory();
+	 * 默认ObjectFactory
+	 */
+	private static final ObjectFactory DEFAULT_OBJECT_FACTORY = new DefaultObjectFactory();
+	/**
+	 * 默认ObjectWrapperFactory
+	 */
+	private static final ObjectWrapperFactory DEFAULT_OBJECT_WRAPPER_FACTORY = new DefaultObjectWrapperFactory();
 
 	public Object intercept(Invocation invocation) throws Throwable {
 		if (invocation.getTarget() instanceof RoutingStatementHandler) {
 			StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
-			MetaObject metaStatementHandler = MetaObject.forObject(statementHandler,DEFAULT_OBJECT_FACTORY,DEFAULT_OBJECT_WRAPPER_FACTORY);
+			MetaObject metaStatementHandler = MetaObject.forObject(statementHandler, DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY);
 			BaseStatementHandler delegate = (BaseStatementHandler) metaStatementHandler.getValue("delegate");
-			MetaObject metaDelegate = MetaObject.forObject(delegate,DEFAULT_OBJECT_FACTORY,DEFAULT_OBJECT_WRAPPER_FACTORY);
+			MetaObject metaDelegate = MetaObject.forObject(delegate, DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY);
 			BoundSql boundSql = delegate.getBoundSql();
 			String originalSql = boundSql.getSql();
 			originalSql = StringUtils.removeEnd(originalSql, ";");
 			MappedStatement mappedStatement = (MappedStatement) metaDelegate.getValue("mappedStatement");
-			log.info("1.resource:     " + mappedStatement.getResource());
-			log.info("2.mappedStatementId:     " + mappedStatement.getId());
-			log.info("3.sql statement:     " + originalSql);
-			log.info("4.sql parameter:     " + boundSql.getParameterObject());
+			log.debug("1.resource:     " + mappedStatement.getResource());
+			log.debug("2.mappedStatementId:     " + mappedStatement.getId());
+			log.debug("3.sql statement:     " + originalSql);
+			log.debug("4.sql parameter:     " + boundSql.getParameterObject());
 			RowBounds rowBounds = (RowBounds) metaDelegate.getValue("rowBounds");
-			if (rowBounds == null || rowBounds == RowBounds.DEFAULT ||rowBounds.getLimit() == RowBounds.NO_ROW_LIMIT) {
+			if (rowBounds == null || rowBounds == RowBounds.DEFAULT || rowBounds.getLimit() == RowBounds.NO_ROW_LIMIT) {
 				return invocation.proceed();
 			}
 			if (rowBounds instanceof Pagination) {
@@ -92,7 +93,8 @@ public class PaginationInterceptor implements Interceptor {
 	}
 
 	private String generatePageSql(Configuration configuration, String originalSql, RowBounds rowBounds) {
-		String databaseType = configuration.getDatabaseId();
+		// String databaseType = configuration.getDatabaseId();
+		String databaseType = DbContextHolder.getDbType();
 		if (StringUtils.startsWithIgnoreCase(databaseType, "oracle")) {
 			StringBuffer sb = new StringBuffer(originalSql.length() + 128);
 			int offset = rowBounds.getOffset();

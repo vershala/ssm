@@ -40,7 +40,7 @@ public class MenuAction {
 		if (pager == null) {
 			pager = new Pager();
 		}
-		System.out.println(request.getSession().getId());
+		request.getSession().setAttribute("aaa", "bbbb");
 		if (menu == null) {
 			menu = new Menu();
 		}

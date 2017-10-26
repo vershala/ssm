@@ -9,20 +9,23 @@
 
 package com.wss.service.log;
 
-import com.wss.log.OperateLog;
+import com.wss.model.log.OperateLog;
+import com.wss.model.log.RequestLog;
 
 /**
  * ClassName:LogService <br/>
  * Function: TODO ADD FUNCTION. <br/>
- * Reason:	 TODO ADD REASON. <br/>
- * Date:     2017年6月26日 上午10:12:48 <br/>
- * @author   Administrator
- * @version  
- * @since    JDK 1.6
- * @see 	 
+ * Reason: TODO ADD REASON. <br/>
+ * Date: 2017年6月26日 上午10:12:48 <br/>
+ * 
+ * @author Administrator
+ * @version
+ * @since JDK 1.6
+ * @see
  */
 public interface LogService {
-	
-	public void insert(OperateLog log);
-}
 
+	public void insert(OperateLog log);
+
+	public void insert(RequestLog log);
+}

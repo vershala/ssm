@@ -13,9 +13,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <meta name="keywords" content="html5, css3, form, switch, animation, :target, pseudo-class" />
         <meta name="author" content="Codrops" />
         <link rel="shortcut icon" href="../favicon.ico"> 
-        <link rel="stylesheet" type="text/css" href="css/learn1/demo.css" />
-        <link rel="stylesheet" type="text/css" href="css/learn1/style.css" />
-		<link rel="stylesheet" type="text/css" href="css/learn1/animate-custom.css" />
+        <link rel="stylesheet" type="text/css" href="<%=basePath%>css/learn1/demo.css" />
+        <link rel="stylesheet" type="text/css" href="<%=basePath%>css/learn1/style.css" />
+		<link rel="stylesheet" type="text/css" href="<%=basePath%>css/learn1/animate-custom.css" />
 		<style type="text/css">
 		 .sel {
 		    background: transparent;

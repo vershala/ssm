@@ -1,4 +1,4 @@
-package com.wss.task;
+package com.wss.common.task;
 
 import java.util.Date;
 

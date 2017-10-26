@@ -56,23 +56,23 @@ public class BaseAction {
 	public void setReqAndRes(HttpServletRequest request, HttpServletResponse response) {
 
 		this.request = request;
-		
+
 		this.response = response;
 
 	}
-	
+
 	protected HttpServletRequest getRequest() {
 		return request;
 	}
-	
+
 	protected HttpServletResponse getResponse() {
 		return response;
 	}
-	
+
 	protected HttpSession getSession() {
 		return session;
 	}
-	
+
 	protected ServletContext getContext() {
 		HttpServletRequest request = getRequest();
 		if (request != null) {
@@ -81,18 +81,18 @@ public class BaseAction {
 
 		return null;
 	}
-	
+
 	/*
-	protected HttpServletRequest getRequest() {
-		return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-	}
-	*/
-	
+	 * protected HttpServletRequest getRequest() { return
+	 * ((ServletRequestAttributes)
+	 * RequestContextHolder.getRequestAttributes()).getRequest(); }
+	 */
+
 	protected void forwardJson(Pagination pagination, List<?> data) {
 		response.setContentType("application/json");
-		Map<String,Object> map=new HashMap<String, Object>();
-		map.put("total",pagination.getTotalCount());
-		map.put("count",data.size());
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("total", pagination.getTotalCount());
+		map.put("count", data.size());
 		map.put("data", data);
 		response.setContentType("application/json");
 		try {
@@ -102,7 +102,7 @@ public class BaseAction {
 			e.printStackTrace();
 		}
 	}
-	
+
 	protected void jsonString(JsonResult result) {
 		response.setContentType("application/json");
 		try {
@@ -112,7 +112,6 @@ public class BaseAction {
 			e.printStackTrace();
 		}
 	}
-	
 
 	public Map<String, Object> getParameters() {
 		return getParametersStartingWith(null);

@@ -1,4 +1,4 @@
-package com.wss.log;
+package com.wss.model.log;
 
 import java.io.Serializable;
 import java.util.Date;

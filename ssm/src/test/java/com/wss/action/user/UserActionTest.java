@@ -15,11 +15,11 @@ import com.wss.service.user.UserService;
 public class UserActionTest extends BaseTest {
 	@Autowired
 	UserService service;
-	
+
 	@Test
 	public void test() {
 		User user = new User();
-		for (int i=0;i<1000;i++){
+		for (int i = 0; i < 1; i++) {
 			user.setType("1");
 			String userName = getRandomName();
 			user.setUsername(userName);
@@ -29,13 +29,12 @@ public class UserActionTest extends BaseTest {
 			user.setEnableflag("Y");
 			service.save(user);
 		}
-				
+
 	}
-	
-	
+
 	private String getRandomName() {
 		StringBuffer sb = new StringBuffer();
-		while(true){
+		while (true) {
 			sb.setLength(0);
 			String base = "abcdefghijklmnopqrstuvwxyz1234567890";
 			Random random = new Random();
@@ -43,14 +42,14 @@ public class UserActionTest extends BaseTest {
 				int number = random.nextInt(base.length());
 				sb.append(base.charAt(number));
 			}
-			Map<String, Object> conditions=new HashMap<String, Object>();
+			Map<String, Object> conditions = new HashMap<String, Object>();
 			conditions.put("username", sb.toString());
 			List<Map<String, Object>> user = service.queryList(conditions);
-			if(user.size() == 0){
+			if (user.size() == 0) {
 				break;
 			}
 		}
 		return sb.toString();
 	}
-	
+
 }

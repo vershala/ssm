@@ -9,6 +9,16 @@
   <url>http://maven.apache.org</url>
   <build>
     <finalName>ssm</finalName>
+
+		  <resources>
+			  <resource>
+				  <directory>src/main/java</directory>
+				  <includes>
+					  <include>**/*.xml</include>
+				  </includes>
+			  </resource>
+		  </resources>
+
 	<plugins>
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -25,7 +35,21 @@
 	        <configuration>
 	          <skipTests>true</skipTests>
 	        </configuration>
-	      </plugin>
+	    </plugin>
+	    <plugin>  
+		    <groupId>org.apache.maven.plugins</groupId>  
+		    <artifactId>maven-source-plugin</artifactId>  
+		    <version>2.2.1</version>  
+		    <executions>  
+		        <execution>  
+		        <id>attach-sources</id>  
+		        <phase>verify</phase>  
+		        <goals>  
+		            <goal>jar-no-fork</goal>  
+		        </goals>  
+		         </execution>  
+		        </executions>  
+		</plugin>    
     </plugins>
   </build>
   <dependencies>
@@ -112,7 +136,7 @@
 	<dependency>
 	    <groupId>org.springframework</groupId>
 	    <artifactId>spring-jdbc</artifactId>
-	    <version>${spring.version}</version>
+	    <version>4.3.10.RELEASE</version>
 	</dependency>
 	<dependency>
 	    <groupId>org.springframework</groupId>
@@ -157,7 +181,7 @@
 	<dependency>
          <groupId>junit</groupId>
          <artifactId>junit</artifactId>
-         <version>4.10</version>
+         <version>4.12</version>
      </dependency>
      <dependency>
 	       <groupId>org.apache.geronimo.specs</groupId>
@@ -190,12 +214,37 @@
          <artifactId>poi-ooxml-schemas</artifactId>
          <version>3.16</version>
      </dependency>
-<dependency>
-    <groupId>javax</groupId>
-    <artifactId>javaee-api</artifactId>
-    <version>7.0</version>
-    <scope>provided</scope>
-</dependency>
+	<dependency>
+	    <groupId>javax</groupId>
+	    <artifactId>javaee-api</artifactId>
+	    <version>7.0</version>
+	    <scope>provided</scope>
+	</dependency>
+	<dependency>
+	    <groupId>org.apache.commons</groupId>
+	    <artifactId>commons-dbcp2</artifactId>
+	    <version>2.2.0</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.apache.commons</groupId>
+	    <artifactId>commons-pool2</artifactId>
+	    <version>2.4.2</version>
+	</dependency>
+	<dependency>
+	    <groupId>dom4j</groupId>
+	    <artifactId>dom4j</artifactId>
+	    <version>1.6.1</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.thoughtworks.xstream</groupId>
+	    <artifactId>xstream</artifactId>
+	    <version>1.4.10</version>
+	</dependency>
+	<dependency>
+	    <groupId>freemarker</groupId>
+	    <artifactId>freemarker</artifactId>
+	    <version>2.3.8</version>
+	</dependency>
   </dependencies>
   <properties>
   	<spring.version>4.3.10.RELEASE</spring.version>

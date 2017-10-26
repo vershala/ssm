@@ -1,4 +1,4 @@
-package com.wss.quartz;
+package com.wss.common.quartz;
 
 import java.util.Date;
 

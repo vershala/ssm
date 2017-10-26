@@ -1,4 +1,4 @@
-package com.wss.task;
+package com.wss.common.task;
 
 import java.util.Date;
 
@@ -12,6 +12,5 @@ public class SpringTask2 {
 	@Scheduled(cron = "0/5 * * * * ?")  
 	public  void execute(){
 		long ms = System.currentTimeMillis();  
-		System.out.println("SpringTask2 is " + new Date(ms)+"  "+ms+"(" + counter++ + ")");  
 	}  
 }

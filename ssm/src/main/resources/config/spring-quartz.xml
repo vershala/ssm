@@ -12,7 +12,7 @@
 	http://www.springframework.org/schema/tx 
 	http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 <!-- 
-    <bean id="SpringQtzJob" class="com.wss.quartz.SpringQtz"/>  
+    <bean id="SpringQtzJob" class="com.wss.common.quartz.SpringQtz"/>  
     <bean id="SpringQtzJobMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
 	    <property name="targetObject">  
 	        <ref bean="SpringQtzJob"/>  

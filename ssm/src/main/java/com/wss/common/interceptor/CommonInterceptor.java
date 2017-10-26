@@ -7,12 +7,14 @@
  *
 */
 
-package com.wss.interceptor;
+package com.wss.common.interceptor;
 
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
@@ -26,9 +28,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.alibaba.fastjson.JSON;
-import com.wss.log.BaseLogger;
-import com.wss.log.OperateLog;
-import com.wss.model.common.UserSession;
+import com.wss.common.log.BaseLogger;
+import com.wss.model.log.RequestLog;
 import com.wss.model.user.User;
 import com.wss.util.UtilString;
 
@@ -36,6 +37,7 @@ import com.wss.util.UtilString;
  * ClassName:CommonInterceptor <br/>
  * Function: TODO ADD FUNCTION. <br/>
  * Reason: TODO ADD REASON. <br/>
+ * 
  * @author Administrator
  * @version
  * @since JDK 1.6
@@ -45,38 +47,50 @@ public class CommonInterceptor extends HandlerInterceptorAdapter {
 
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		User user = (User) request.getSession().getAttribute("SESSION_USER");
-		if (user == null) {
+		String requestUrl = request.getRequestURL().toString();
+		if (user == null && requestUrl.indexOf("/ssm/login") == -1) {
 			response.setCharacterEncoding("UTF-8");
-	        PrintWriter out = response.getWriter();  
-	        out.println("<html>");      
-	        out.println("<script>");      
-	        out.println("window.open ('"+request.getContextPath()+"/login/logout','_top')");      
-	        out.println("</script>");      
-	        out.println("</html>");    
-	        return false;  
-		} else{
-			UserSession.destory();
-			UserSession.setUserName(user.getUsername());
-			UserSession.setRealName(user.getFullname());
-			OperateLog log = new OperateLog();
-			log.setUserName(user.getUsername());
-			log.setOperate(request.getRequestURI());
-			log.setMethod(request.getMethod());
-			log.setParams(JSON.toJSONString(getParams(request)));
-			log.setIp(request.getLocalAddr());
-            BaseLogger.operateLog(log);
+			PrintWriter out = response.getWriter();
+			out.println("<html>");
+			out.println("<script>");
+			out.println("window.open ('" + request.getContextPath() + "/login/logout','_top')");
+			out.println("</script>");
+			out.println("</html>");
+			return false;
 		}
-			return true;
+		Date requestDate = new Date();
+		long requestMillis = System.currentTimeMillis();
+		request.setAttribute("requestMillis", requestMillis);
+		request.setAttribute("requestDate", requestDate);
+		request.setAttribute("requestIp", request.getRemoteAddr());
+		return true;
 	}
 
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-		
+
 	}
 
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+		long requestMillis = (Long) request.getAttribute("requestMillis");
+		Date requestDate = (Date) request.getAttribute("requestDate");
+		String requestIp = (String) request.getAttribute("requestIp");
+
+		Date responseDate = new Date();
+		long responseMillis = System.currentTimeMillis();
+		Long costTime = responseMillis - requestMillis;
+
+		RequestLog log = new RequestLog();
+		log.setRequestDate(requestDate);
+		log.setRequestIp(requestIp);
+		log.setRequestUrl(request.getRequestURI());
+		log.setRequestMethod(request.getMethod());
+		log.setParams(JSON.toJSONString(getParams(request)));
+		log.setResponseIp(InetAddress.getLocalHost().getHostAddress());
+		log.setResponseDate(responseDate);
+		log.setCostTime(String.valueOf(costTime));
+		BaseLogger.RequestLog(log);
 	}
-	
-	
+
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> getParams(HttpServletRequest request) {
 		String prefix = "";

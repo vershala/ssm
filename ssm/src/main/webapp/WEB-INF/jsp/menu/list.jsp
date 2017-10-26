@@ -99,8 +99,8 @@ $(function() {
 	
    $( "#dialog-form" ).dialog({
 	      autoOpen: false,
-	      height: 400,
-	      width: 420,
+	      height: 450,
+	      width: 620,
 	      modal: true,
 	      buttons: {
 	        "确定": function() {
@@ -272,16 +272,18 @@ function del(id){
 	</div>
 </div>
 
-<div id="dialog-form" title="创建新用户">
-	<p class="validateTips">说明在这里</p>
+<div id="dialog-form" title="编辑菜单">
+	<p class="validateTips">注册菜单</p>
 	<form>
 		<fieldset>
-			<label for="name">名字</label>
-			<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all">
-			<label for="email">邮箱</label>
-			<input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all">
-			<label for="password">密码</label>
-			<input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all">
+			<label for="name">菜单名称</label>
+			<input type="text" name="menuName" id="menuName" class="text ui-widget-content ui-corner-all">
+			<label for="name">菜单URL</label>
+			<input type="text" name="url" id="url" class="text ui-widget-content ui-corner-all">
+			<label for="email">是否启用</label>
+			<input type="text" name="enableFlag" id="enableFlag" value="" class="text ui-widget-content ui-corner-all">
+			<label for="password">上级菜单</label>
+			<input type="text" name="parMenu" id="parMenu" value="" class="text ui-widget-content ui-corner-all">
 		</fieldset>
 	</form>
 </div>

@@ -16,9 +16,9 @@ $(function() {
 		<button type="button" class="navbar-toggle pull-left animated flip">
 			<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand" href="index.html"> <img alt="Charisma Logo" src="images/charisma/logo20.png" class="hidden-xs" /> <span>Charisma</span>
+		<a class="navbar-brand" href="index.html"> 
+			<img alt="Charisma Logo" src="images/charisma/logo20.png" class="hidden-xs" /> <span>demo</span>
 		</a>
-
 		<div class="btn-group pull-right">
 			<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 				<i class="glyphicon glyphicon-user"></i>
@@ -39,7 +39,6 @@ $(function() {
 		<div class="nav-canvas">
 			<div class="nav-sm nav nav-stacked"></div>
 			<ul class="nav nav-pills nav-stacked main-menu">
-				<li class="nav-header">Main</li>
 					<c:if test="${!empty menuList }">
 						<c:forEach items="${menuList}" var="menu" varStatus="s">
 							<li>
@@ -47,45 +46,44 @@ $(function() {
 							</li>
 						</c:forEach>
 					</c:if>
-				<!--  			
-				<li>
-					<a class="ajax-link" onclick="menuClick(this);" href="user/getAllUser" target="work"> <i class="glyphicon glyphicon-home"> </i> <span>测试1</span></a>
-				</li>
-				<li>
-					<a class="ajax-link" onclick="menuClick(this);" href="user/login" target="work"> <i class="glyphicon glyphicon-eye-open"> </i> <span>测试2</span></a>
-				</li>
 				<li class="accordion">
-					<a href="#"><i class="glyphicon glyphicon-plus"></i><span> 测试3</span></a>
+					<a href="javascript:void(0)"><i class="glyphicon glyphicon-plus"></i><span> 系统管理</span></a>
 					<ul class="nav nav-pills nav-stacked">
 						<li>
-							<a href="#">测试31</a>
+							<a href="javascript:void(0)">系统日志</a>
 						</li>
 						<li>
-							<a href="#">测试32</a>
+							<a href="javascript:void(0)">系统配置</a>
 						</li>
 					</ul>
 				</li>
 				<li class="accordion">
-					<a href="#"><i class="glyphicon glyphicon-plus"></i><span> 测试4</span></a>
+					<a href="#"><i class="glyphicon glyphicon-plus"></i><span>我说得对</span></a>
 					<ul class="nav nav-pills nav-stacked">
 						<li class="accordion">
-							<a href="#">测试41</a>
+							<a href="javascript:void(0)">他说的不对</a>
 								<ul class="nav nav-pills nav-stacked">
 									<li>
-										<a href="#">测试411</a>
+										<a href="javascript:void(0)">楼上说的都对</a>
 									</li>
 									<li>
-										<a href="#">测试412</a>
+										<a href="javascript:void(0)">楼上说的都不对</a>
 									</li>
 								</ul>
 						</li>
 						<li>
-							<a href="#">测试42</a>
+							<a href="javascript:void(0)">地板</a>
 						</li>
 					</ul>
 				</li>
-				-->
 			</ul>
 		</div>
 	</div>
 </div>
+<script>
+function menuClick(obj){
+	var $this = $(obj);
+	var href = $this.data('href');
+	$(".main-meun").find('iframe').attr('src',href);
+}
+</script>

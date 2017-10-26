@@ -9,9 +9,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>控制台首页</title>
+<title>首页</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
+<meta name="description" content="HTML5, Bootstrap admin template.">
 <meta name="author" content="Muhammad Usman">
 <base href="<%=basePath%>" />
 <%@ include file="/WEB-INF/jsp/common/meta.jsp"%>
@@ -45,11 +45,4 @@
 		</div>
 	</div>
 </body>
-<script>
-function menuClick(obj){
-	var $this = $(obj);
-	var href = $this.data('href');
-	$(".main-meun").find('iframe').attr('src',href);
-}
-</script>
 </html>

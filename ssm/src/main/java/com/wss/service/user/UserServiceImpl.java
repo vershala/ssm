@@ -72,20 +72,20 @@ public class UserServiceImpl extends SqlSessionService implements UserService {
 		return mapper.userCount(username, password);
 	}
 
-	public List<Map<String,Object>> getAllUserByPage1(Integer startRecord, Integer pageSize, String username, String password) {
-		Map<String,Object> parms = new HashMap<String,Object>();
+	public List<Map<String, Object>> getAllUserByPage1(Integer startRecord, Integer pageSize, String username, String password) {
+		Map<String, Object> parms = new HashMap<String, Object>();
 		parms.put("startRecord", startRecord);
 		parms.put("pageSize", pageSize);
 		parms.put("username", username);
 		parms.put("password", password);
-		return sqlSession.selectList("com.wss.dao.user.UserMapper.getAllUserByPage",parms);
+		return sqlSession.selectList("com.wss.dao.user.UserMapper.getAllUserByPage", parms);
 	}
-	
-	public List<Map<String,Object>> queryList(Map<String,Object> parms) {
-		return sqlSession.selectList("com.wss.dao.user.UserMapper.queryList",parms);
+
+	public List<Map<String, Object>> queryList(Map<String, Object> parms) {
+		return sqlSession.selectList("com.wss.dao.user.UserMapper.queryList", parms);
 	}
-	
-	public List<Map<String,Object>> queryList(Map<String,Object> parms,Pagination pagination) {
-		return sqlSession.selectList("com.wss.dao.user.UserMapper.queryList",parms,pagination);
+
+	public List<Map<String, Object>> queryList(Map<String, Object> parms, Pagination pagination) {
+		return sqlSession.selectList("com.wss.dao.user.UserMapper.queryList", parms, pagination);
 	}
 }

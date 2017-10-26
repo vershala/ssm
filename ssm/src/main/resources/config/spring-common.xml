@@ -13,60 +13,71 @@
 		http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 		
 	<context:annotation-config />
+	<context:component-scan base-package="com.wss.*" />
 
-	<!-- 读取资源文件 -->
-	<!-- 引入外部properties配置文件 -->
 	<bean id="configProperties"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="location" value="classpath:config/jdbc.properties" />
 	</bean> 
 
-	<!-- 1. 数据源 : dataSource -->
-	<bean id="dataSource"
+	<bean id="parentDataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	
+	</bean>
+	
+	<bean id="mySqlDataSource" parent="parentDataSource">  
 		<property name="driverClassName" value="${jdbc.driverClassName}"/>
 		<property name="url" value="${jdbc.url}"/>
 		<property name="username" value="${jdbc.username}"/>
 		<property name="password" value="${jdbc.password}"/>
 	</bean>
+	
+	<bean id="logDataSource" parent="parentDataSource">  
+		<property name="driverClassName" value="${jdbc.logDriver}"/>
+		<property name="url" value="${jdbc.logUrl}"/>
+		<property name="username" value="${jdbc.logUsername}"/>
+		<property name="password" value="${jdbc.logPassword}"/>
+	</bean>
+		
+	<bean id="oracleDataSource" parent="parentDataSource">  
+	    <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>  
+	    <property name="url" value="${jdbc.oracleUrl}"></property>  
+	    <property name="username" value="scmsit"></property>  
+	    <property name="password" value="pdssit321"></property>  
+	</bean>  
+	  
+	<bean id="dataSource" class="com.wss.common.dataSource.DbContextHolder">  
+	    <property name="targetDataSources">  
+	        <map key-type="java.lang.String">  
+	            <entry value-ref="logDataSource" key="mysqlLog"></entry>  
+	            <entry value-ref="mySqlDataSource" key="mysql"></entry>  
+            	<entry value-ref="oracleDataSource" key="oracle"></entry>  
+	        </map>  
+	    </property>  
+	    <property name="defaultTargetDataSource" ref="mySqlDataSource"></property>  
+	</bean>  
 
-	<!--
-		2. mybatis的SqlSession的工厂: SqlSessionFactoryBean dataSource:引用数据源
-		MyBatis定义数据源,同意加载配置
-	-->
+
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"></property>
 		<property name="configLocation" value="classpath:config/mybatis-config.xml" /> 
 		<property name="mapperLocations" value="classpath:com/wss/dao/**/*.xml" /> 
 	</bean>
 
-	<!--通过模板定制mybatis的行为 -->  
 	<bean id="sqlSessionTemplateBatch" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">     
 		<constructor-arg index="0" ref="sqlSessionFactory" />  
-		<!--更新采用批量模式 -->  
 		<constructor-arg index="1" value="BATCH"/>  
 	</bean> 
 
-	<!--
-		3. mybatis自动扫描加载Sql映射文件/接口 : MapperScannerConfigurer sqlSessionFactory
-		basePackage:指定sql映射文件/接口所在的包（自动扫描）
-	-->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.wss.dao"></property>
 		<property name="sqlSessionTemplateBeanName" value="sqlSessionTemplateBatch"></property>
-		<!-- <property name="sqlSessionFactory" ref="sqlSessionFactory"></property> -->
 	</bean>
 
-	<!--
-		4. 事务管理 : DataSourceTransactionManager dataSource:引用上面定义的数据源
-	-->
 	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 
-	<!-- 5. 使用声明式事务
-		 transaction-manager：引用上面定义的事务管理器
-	 -->
 	<tx:annotation-driven transaction-manager="txManager" />
 	
 </beans>

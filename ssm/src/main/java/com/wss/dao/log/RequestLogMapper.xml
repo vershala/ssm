@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wss.dao.log.RequestLogMapper">
+
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from request_log_tbl
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.wss.model.log.RequestLog">
+    insert into request_log_tbl
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="requestDate != null">
+        request_date,
+      </if>
+      <if test="requestIp != null">
+        request_ip,
+      </if>
+      <if test="requestUrl != null">
+        request_url,
+      </if>
+      <if test="requestMethod != null">
+        request_method,
+      </if>
+      <if test="params != null">
+        params,
+      </if>
+      <if test="responseDate != null">
+        response_date,
+      </if>
+      <if test="responseIp != null">
+        response_ip,
+      </if>
+      <if test="costTime != null">
+        cost_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="requestDate != null">
+        #{requestDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="requestIp != null">
+        #{requestIp,jdbcType=VARCHAR},
+      </if>
+      <if test="requestUrl != null">
+        #{requestUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="requestMethod != null">
+        #{requestMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="params != null">
+        #{params,jdbcType=VARCHAR},
+      </if>
+      <if test="responseDate != null">
+        #{responseDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="responseIp != null">
+        #{responseIp,jdbcType=VARCHAR},
+      </if>
+      <if test="costTime != null">
+        #{costTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="com.wss.model.log.RequestLog">
+    update request_log_tbl
+    <set>
+      <if test="requestDate != null">
+        request_date = #{requestDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="requestIp != null">
+        request_ip = #{requestIp,jdbcType=VARCHAR},
+      </if>
+      <if test="requestUrl != null">
+        request_url = #{requestUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="requestMethod != null">
+        request_method = #{requestMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="params != null">
+        params = #{params,jdbcType=VARCHAR},
+      </if>
+      <if test="responseDate != null">
+        response_date = #{responseDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="responseIp != null">
+        response_ip = #{responseIp,jdbcType=VARCHAR},
+      </if>
+      <if test="costTime != null">
+        cost_time = #{costTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
