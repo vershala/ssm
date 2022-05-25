@@ -247,7 +247,7 @@
 	</dependency>
   </dependencies>
   <properties>
-  	<spring.version>4.3.10.RELEASE</spring.version>
+  	<spring.version>5.2.22.RELEASE</spring.version>
   	 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
   </properties>
 </project>
